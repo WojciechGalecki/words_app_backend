@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "userId",
+    "word",
+    "definitions"
+  ],
+  "properties": {
+    "userId": {
+      "type": "string"
+    },
+    "word": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "definitions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 100
+      }
+    }
+  },
+  "$schema": "http://json-schema.org/draft-04/schema#"
+}

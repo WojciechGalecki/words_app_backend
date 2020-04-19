@@ -1,0 +1,81 @@
+---
+service: words-app
+
+provider:
+  name: aws
+  stage: ${opt:stage, 'dev'}
+  runtime: python3.7
+  profile: wojtek
+  region: eu-west-1
+  timeout: 3
+  memory: 128
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - dynamodb:DescribeTable
+      Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+  environment:
+    DYNAMODB_TABLE: ${self:service}-${self:provider.stage}
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+
+functions:
+  create_or_update_word:
+    handler: lambda_function/create_or_update_word.lambda_handler
+    events:
+      - http:
+          path: words
+          method: post
+          request:
+            schema:
+              application/json: ${file(validation/createOrUpdateWordPayloadSchema.json)}
+
+resources:
+  Resources:
+    WordsDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: userId
+            AttributeType: S
+          -
+            AttributeName: word
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: userId
+            KeyType: HASH
+          -
+            AttributeName: word
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:provider.environment.DYNAMODB_TABLE}
+
+plugins:
+  - serverless-python-requirements
+
+package:
+  exclude:
+    - node_modules/**
+    - .idea/**
+    - .pytest_cache/**
+    - venv/**
+    - README.md
+    - package.json
+    - package-lock.json
+    - requirements.txt
+    - test/**
+    - .gitignore
+    - sls-cheat-sheet
