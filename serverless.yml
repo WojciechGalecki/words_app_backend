@@ -1,4 +1,7 @@
 ---
+org: wojciechgalecki
+app: words-app-app
+
 service: words-app
 
 provider:

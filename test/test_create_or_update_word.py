@@ -1,10 +1,8 @@
-import pytest
-
 from lambda_function import create_or_update_word as _lambda
 
 
-# TODO mock dynamodb
 def test_lambda_handler():
+    # no dynamodb mocking - when error from boto3 client expect Internal Server Error
     # given
     event = {
         'body': '{"userId": "1", "word": "postman", "definitions": ["test1"]}'

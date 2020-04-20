@@ -1,0 +1,47 @@
+---
+# create_or_update_word tests
+- name: 'create_or_update_word - when no body expect http status 400'
+  endpoint:
+    method: POST
+    path: /words
+  request:
+    headers:
+      'Content-Type': application/json
+  response:
+    status: 400
+    body: '{"message": "Invalid request body"}'
+
+- name: 'create_or_update_word - when empty body expect http status 400'
+  endpoint:
+    method: POST
+    path: /words
+  request:
+    headers:
+      'Content-Type': application/json
+    body: {}
+  response:
+    status: 400
+    body: '{"message": "Invalid request body"}'
+
+- name: 'create_or_update_word - when body without required parameter expect http status 400'
+  endpoint:
+    method: POST
+    path: /words
+  request:
+    headers:
+      'Content-Type': application/json
+    body: '{"userId": "1", "word": "test"}'
+  response:
+    status: 400
+    body: '{"message": "Invalid request body"}'
+
+- name: 'create_or_update_word - when valid body expect http status 200'
+  endpoint:
+    method: POST
+    path: /words
+  request:
+    headers:
+      'Content-Type': application/json
+    body: '{"userId": "serverless", "word": "test", "definitions": ["test"]}'
+  response:
+    status: 200
