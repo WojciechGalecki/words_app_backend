@@ -41,6 +41,18 @@ functions:
             schema:
               application/json: ${file(validation/createOrUpdateWordPayloadSchema.json)}
 
+  delete_word:
+    handler: lambda_function/delete_word.lambda_handler
+    events:
+      - http:
+          path: words
+          method: delete
+          request:
+            parameters:
+              querystrings:
+                userId: true
+                word: true
+
 resources:
   Resources:
     WordsDynamoDbTable:

@@ -45,3 +45,34 @@
     body: '{"userId": "serverless", "word": "test", "definitions": ["test"]}'
   response:
     status: 200
+
+# delete_word tests
+- name: 'delete_word - when no required query params expect http status 400'
+  endpoint:
+    method: DELETE
+    path: /words
+  response:
+    status: 400
+    body: '{"error": "Missing required parameters: userId, word"}'
+
+- name: 'delete_word - when only one required query parameter expect http status 400'
+  endpoint:
+    method: DELETE
+    path: /words?userId=test
+  response:
+    status: 400
+    body: '{"error": "Missing required parameters: userId, word"}'
+
+- name: 'delete_word - when deleting not existing item expect http status 404'
+  endpoint:
+    method: DELETE
+    path: /words?userId=test&word=test
+  response:
+    status: 404
+
+- name: 'delete_word - when deleting existing item expect http status 200'
+  endpoint:
+    method: DELETE
+    path: /words?userId=serverless&word=test
+  response:
+    status: 404
