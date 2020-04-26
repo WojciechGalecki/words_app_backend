@@ -32,7 +32,7 @@ custom:
 
 functions:
   create_or_update_word:
-    handler: lambda_function/create_or_update_word.lambda_handler
+    handler: lambda_functions/create_or_update_word.lambda_handler
     events:
       - http:
           path: words
@@ -42,7 +42,7 @@ functions:
               application/json: ${file(validation/createOrUpdateWordPayloadSchema.json)}
 
   delete_word:
-    handler: lambda_function/delete_word.lambda_handler
+    handler: lambda_functions/delete_word.lambda_handler
     events:
       - http:
           path: words
@@ -54,7 +54,7 @@ functions:
                 word: true
 
   get_all_words:
-    handler: lambda_function/get_all_words.lambda_handler
+    handler: lambda_functions/get_all_words.lambda_handler
     events:
       - http:
           path: words

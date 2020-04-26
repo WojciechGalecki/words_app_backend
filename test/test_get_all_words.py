@@ -1,6 +1,6 @@
 import pytest
 
-from lambda_function import get_all_words as _lambda
+from lambda_functions import get_all_words as _lambda
 
 
 def test_lambda_handler():

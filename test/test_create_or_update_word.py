@@ -1,4 +1,4 @@
-from lambda_function import create_or_update_word as _lambda
+from lambda_functions import create_or_update_word as _lambda
 
 
 def test_lambda_handler():

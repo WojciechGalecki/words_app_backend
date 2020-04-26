@@ -1,6 +1,6 @@
 import pytest
 
-from lambda_function import delete_word as _lambda
+from lambda_functions import delete_word as _lambda
 
 
 def test_lambda_handler():

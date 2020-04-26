@@ -1,15 +1,8 @@
-import logging
-import boto3
 import os
 
-from lambda_function.create_response import create_response
-
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
-
-dynamo_db = boto3.resource('dynamodb')
-
-DYNAMODB_TABLE = 'DYNAMODB_TABLE'
+from lambda_functions.layers.http_response import create_response
+from lambda_functions.layers.logger import logger
+from lambda_functions.layers.dynamodb import dynamo_db
 
 
 def lambda_handler(event, _) -> object:
@@ -22,7 +15,7 @@ def lambda_handler(event, _) -> object:
         word = query_params['word']
 
         logger.info(f'Deleting word: ${word} from user ${user_id} dictionary')
-        table = dynamo_db.Table(os.environ[DYNAMODB_TABLE])
+        table = dynamo_db.Table(os.environ['DYNAMODB_TABLE'])
 
         result = table.delete_item(
             Key={

@@ -1,16 +1,9 @@
-import logging
-import boto3
 import os
 
 from boto3.dynamodb.conditions import Key
-from lambda_function.create_response import create_response
-
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
-
-dynamo_db = boto3.resource('dynamodb')
-
-DYNAMODB_TABLE = 'DYNAMODB_TABLE'
+from lambda_functions.layers.http_response import create_response
+from lambda_functions.layers.logger import logger
+from lambda_functions.layers.dynamodb import dynamo_db
 
 
 def lambda_handler(event, _) -> object:
@@ -22,7 +15,7 @@ def lambda_handler(event, _) -> object:
         user_id = query_params['userId']
 
         logger.info(f'Getting all words for user ${user_id}')
-        table = dynamo_db.Table(os.environ[DYNAMODB_TABLE])
+        table = dynamo_db.Table(os.environ['DYNAMODB_TABLE'])
 
         result = table.query(
             KeyConditionExpression=Key('userId').eq(user_id)
