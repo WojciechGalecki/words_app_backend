@@ -70,9 +70,34 @@
   response:
     status: 404
 
-- name: 'delete_word - when deleting existing item expect http status 200'
+#- name: 'delete_word - when deleting existing item expect http status 200'
+#  endpoint:
+#    method: DELETE
+#    path: /words?userId=serverless&word=test
+#  response:
+#    status: 200
+
+# get_all_words tests
+- name: 'get_all_words - when no required query parameter expect http status 400'
   endpoint:
-    method: DELETE
-    path: /words?userId=serverless&word=test
+    method: GET
+    path: /words
   response:
-    status: 404
+    status: 400
+    body: '{"error": "Missing required parameter: userId"}'
+
+- name: 'get_all_words - when getting all words for not existing user expect http status 200 and empty list'
+  endpoint:
+    method: GET
+    path: /words?userId=notExists
+  response:
+    status: 200
+    body: '[]'
+
+#- name: 'get_all_words - when getting all words for existing user expect http status 200 and list of items'
+#  endpoint:
+#    method: GET
+#    path: /words?userId=testGetAll
+#  response:
+#    status: 200
+#    body: '[{"word": "test", "definitions": ["test"}]'

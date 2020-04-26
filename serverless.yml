@@ -53,6 +53,17 @@ functions:
                 userId: true
                 word: true
 
+  get_all_words:
+    handler: lambda_function/get_all_words.lambda_handler
+    events:
+      - http:
+          path: words
+          method: get
+          request:
+            parameters:
+              querystrings:
+                userId: true
+
 resources:
   Resources:
     WordsDynamoDbTable:

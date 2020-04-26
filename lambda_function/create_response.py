@@ -2,7 +2,7 @@ import json
 
 
 def create_response(status: int, body: object = None) -> object:
-    if body:
+    if body is not None:
         return {
             'statusCode': status,
             'headers': {

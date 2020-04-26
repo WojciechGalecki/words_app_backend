@@ -1,6 +1,6 @@
 import pytest
 
-from lambda_function import delete_word as _lambda
+from lambda_function import get_all_words as _lambda
 
 
 def test_lambda_handler():
@@ -8,8 +8,7 @@ def test_lambda_handler():
     # given
     event = {
         'queryStringParameters': {
-            "userId": "1",
-            "word": "test"
+            "userId": "1"
         }
     }
 
@@ -38,7 +37,7 @@ def test_lambda_handler():
         'headers': {
             'Content-Type': 'application/json'
         },
-        'body': '{"error": "Missing required parameters: userId, word"}'
+        'body': '{"error": "Missing required parameter: userId"}'
     }
 
     # when
@@ -49,16 +48,31 @@ def test_lambda_handler():
 
 
 def test_validate_query_params():
-    # when no parameters expect ValueError
+    # when no required parameter expect ValueError
     with pytest.raises(ValueError):
         _lambda.validate_query_params(None)
 
-    # when only one required parameters expect ValueError
-    with pytest.raises(ValueError):
-        _lambda.validate_query_params({'userId': 'test'})
-
-    # when all parameters expect no response
-    actual_response = _lambda.validate_query_params({'userId': 'test', 'word': 'test'})
+    # when required parameter expect expect no response
+    actual_response = _lambda.validate_query_params({'userId': 'test'})
 
     # then
     assert actual_response is None
+
+
+def test_transform_items():
+    # given
+    items = [
+        {'userId': '1', 'test': 'test'},
+        {'userId': '1', 'foo': 'bar'}
+    ]
+
+    expected_items = [
+        {'test': 'test'},
+        {'foo': 'bar'}
+    ]
+
+    # when
+    actual_items = _lambda.transform_items(items)
+
+    # then
+    assert actual_items == expected_items
