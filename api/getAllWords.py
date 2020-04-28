@@ -1,9 +1,10 @@
 import os
 
 from boto3.dynamodb.conditions import Key
-from layers.httpResponse import create_response
-from layers.logger import logger
-from layers.dynamodb import dynamo_db
+
+from libs.httpResponse import create_response
+from libs.logger import logger
+from libs.dynamodb import dynamo_db
 
 
 def lambda_handler(event, _) -> object:
