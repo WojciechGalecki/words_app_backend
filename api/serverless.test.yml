@@ -53,7 +53,7 @@
     path: /words
   response:
     status: 400
-    body: '{"error": "Missing required parameters: userId, word"}'
+    body: '{"message": "Missing required parameters: userId, word"}'
 
 - name: 'delete_word - when only one required query parameter expect http status 400'
   endpoint:
@@ -61,7 +61,7 @@
     path: /words?userId=test
   response:
     status: 400
-    body: '{"error": "Missing required parameters: userId, word"}'
+    body: '{"message": "Missing required parameters: userId, word"}'
 
 - name: 'delete_word - when deleting not existing item expect http status 404'
   endpoint:
@@ -84,7 +84,7 @@
     path: /words
   response:
     status: 400
-    body: '{"error": "Missing required parameter: userId"}'
+    body: '{"message": "Missing required parameter: userId"}'
 
 - name: 'get_all_words - when getting all words for not existing user expect http status 200 and empty list'
   endpoint:

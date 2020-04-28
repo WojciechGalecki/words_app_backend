@@ -1,6 +1,6 @@
 import pytest
 
-from lambda_functions import delete_word as _lambda
+from getAllWords import lambda_handler, validate_query_params, transform_items
 
 
 def test_lambda_handler():
@@ -8,8 +8,7 @@ def test_lambda_handler():
     # given
     event = {
         'queryStringParameters': {
-            "userId": "1",
-            "word": "test"
+            "userId": "1"
         }
     }
 
@@ -18,11 +17,11 @@ def test_lambda_handler():
         'headers': {
             'Content-Type': 'application/json'
         },
-        'body': '{"error": "Unknown error occurred!"}'
+        'body': '{"message": "Unknown error occurred!"}'
     }
 
     # when
-    actual_response = _lambda.lambda_handler(event, {})
+    actual_response = lambda_handler(event, {})
 
     # then
     assert actual_response == expected_response
@@ -38,27 +37,42 @@ def test_lambda_handler():
         'headers': {
             'Content-Type': 'application/json'
         },
-        'body': '{"error": "Missing required parameters: userId, word"}'
+        'body': '{"message": "Missing required parameter: userId"}'
     }
 
     # when
-    actual_response = _lambda.lambda_handler(event, {})
+    actual_response = lambda_handler(event, {})
 
     # then
     assert actual_response == expected_response
 
 
 def test_validate_query_params():
-    # when no parameters expect ValueError
+    # when no required parameter expect ValueError
     with pytest.raises(ValueError):
-        _lambda.validate_query_params(None)
+        validate_query_params(None)
 
-    # when only one required parameters expect ValueError
-    with pytest.raises(ValueError):
-        _lambda.validate_query_params({'userId': 'test'})
-
-    # when all parameters expect no response
-    actual_response = _lambda.validate_query_params({'userId': 'test', 'word': 'test'})
+    # when required parameter expect expect no response
+    actual_response = validate_query_params({'userId': 'test'})
 
     # then
     assert actual_response is None
+
+
+def test_transform_items():
+    # given
+    items = [
+        {'userId': '1', 'test': 'test'},
+        {'userId': '1', 'foo': 'bar'}
+    ]
+
+    expected_items = [
+        {'test': 'test'},
+        {'foo': 'bar'}
+    ]
+
+    # when
+    actual_items = transform_items(items)
+
+    # then
+    assert actual_items == expected_items

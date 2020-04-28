@@ -1,9 +1,9 @@
 import os
 
 from boto3.dynamodb.conditions import Key
-from lambda_functions.layers.http_response import create_response
-from lambda_functions.layers.logger import logger
-from lambda_functions.layers.dynamodb import dynamo_db
+from layers.httpResponse import create_response
+from layers.logger import logger
+from layers.dynamodb import dynamo_db
 
 
 def lambda_handler(event, _) -> object:
@@ -25,10 +25,10 @@ def lambda_handler(event, _) -> object:
         return create_response(200, transformed_items)
 
     except ValueError:
-        return create_response(400, {'error': 'Missing required parameter: userId'})
+        return create_response(400, {'message': 'Missing required parameter: userId'})
     except Exception as err:
         logger.error(err)
-        return create_response(500, {'error': 'Unknown error occurred!'})
+        return create_response(500, {'message': 'Unknown error occurred!'})
 
 
 def transform_items(items: list) -> list:

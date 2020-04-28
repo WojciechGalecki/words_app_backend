@@ -1,11 +1,14 @@
-# AWS Lambda functions
-Serverless framework - https://serverless.com/
+# Words App backend:
+
+# AWS Services:
+- db - DynamoDB
+- api - API Gateway + Lambda functions
+
+Each service uses the Serverless framework - https://serverless.com/
 
 - deploy: `sls deploy -v`
 
-
-
-# tests
+# Tests
 - unit tests: `python -m pytest`
 
 - integration tests: `sls test`

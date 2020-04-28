@@ -1,4 +1,4 @@
-from lambda_functions import create_or_update_word as _lambda
+from createOrUpdateWord import lambda_handler
 
 
 def test_lambda_handler():
@@ -13,11 +13,11 @@ def test_lambda_handler():
         'headers': {
             'Content-Type': 'application/json'
         },
-        'body': '{"error": "Unknown error occurred!"}'
+        'body': '{"message": "Unknown error occurred!"}'
     }
 
     # when
-    actual_response = _lambda.lambda_handler(event, {})
+    actual_response = lambda_handler(event, {})
 
     # then
     assert actual_response == expected_response

@@ -1,4 +1,4 @@
-from lambda_functions.layers.http_response import create_response
+from api.layers.httpResponse import create_response
 
 
 def test_create_response():
